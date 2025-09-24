@@ -1,212 +1,207 @@
 <!doctype html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Boss Fitness Studios</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Boss Fitness Studios - Style Demo</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: #1a1a1a;
+        color: white;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      .demo-header {
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        position: relative;
+        z-index: 100;
+      }
+
+      .demo-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+      }
+
+      .demo-controls {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+      }
+
+      .style-selector {
+        background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.2);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        cursor: pointer;
+      }
+
+      .style-selector option {
+        background: #1a1a1a;
+        color: white;
+      }
+
+      .toggle-btn {
+        background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.2);
+        color: white;
+        padding: 0.5rem 0.75rem;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+
+      .toggle-btn:hover {
+        background: rgba(255,255,255,0.2);
+      }
+
+      .frame-container {
+        height: calc(100vh - 80px);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .page-frame {
+        width: 100%;
+        height: 100%;
+        border: none;
+        transition: opacity 0.3s ease;
+      }
+
+      .loading {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #888;
+        font-size: 0.9rem;
+      }
+
+      .demo-info {
+        font-size: 0.75rem;
+        opacity: 0.7;
+        text-align: right;
+      }
+
+      .style-description {
+        font-size: 0.8rem;
+        opacity: 0.8;
+        margin-left: 1rem;
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="demo-header">
+      <div>
+        <span class="demo-title">Boss Fitness Studios - Client Demo</span>
+        <span class="style-description" id="styleDescription">Modern SaaS-style layout</span>
+      </div>
+
+      <div class="demo-controls">
+        <select id="styleSelector" class="style-selector">
+          <option value="modern">Modern/SaaS</option>
+          <option value="energetic">Bold & Energetic</option>
+          <option value="professional">Classic Professional</option>
+          <option value="local">Local & Personal</option>
+        </select>
+
+        <button id="logoToggle" class="toggle-btn">Hide Logo</button>
+        <button id="newTab" class="toggle-btn">Open Standalone</button>
+      </div>
+
+      <div class="demo-info">
+        Different visual personalities • Same content
+      </div>
+    </div>
+
+    <div class="frame-container">
+      <div class="loading" id="loading">Loading...</div>
+      <iframe id="pageFrame" class="page-frame" src="variations/modern.html"></iframe>
+    </div>
+
     <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ["Inter", "sans-serif"],
-            },
-          },
-        },
+      const styleSelector = document.getElementById('styleSelector');
+      const logoToggle = document.getElementById('logoToggle');
+      const newTab = document.getElementById('newTab');
+      const pageFrame = document.getElementById('pageFrame');
+      const loading = document.getElementById('loading');
+      const styleDescription = document.getElementById('styleDescription');
+
+      const styleDescriptions = {
+        modern: 'Clean, minimal, SaaS-style layout',
+        energetic: 'Bold colors, dynamic, fitness energy',
+        professional: 'Traditional business, conservative',
+        local: 'Personal touch, local Ottawa character'
+      };
+
+      let currentStyle = 'modern';
+      let logoVisible = true;
+
+      // Style switcher
+      styleSelector.addEventListener('change', function() {
+        currentStyle = this.value;
+        loading.style.display = 'block';
+        pageFrame.style.opacity = '0.5';
+
+        styleDescription.textContent = styleDescriptions[currentStyle];
+
+        setTimeout(() => {
+          const url = `variations/${currentStyle}.html`;
+          pageFrame.src = logoVisible ? url : `${url}?hide-logo=1`;
+
+          pageFrame.onload = () => {
+            loading.style.display = 'none';
+            pageFrame.style.opacity = '1';
+          };
+        }, 200);
+      });
+
+      // Logo toggle
+      logoToggle.addEventListener('click', function() {
+        logoVisible = !logoVisible;
+        this.textContent = logoVisible ? 'Hide Logo' : 'Show Logo';
+
+        // Communicate with iframe via postMessage with delay to ensure iframe is ready
+        setTimeout(() => {
+          if (pageFrame.contentWindow) {
+            console.log('Sending message:', { type: 'toggleLogo', visible: logoVisible });
+            pageFrame.contentWindow.postMessage({
+              type: 'toggleLogo',
+              visible: logoVisible
+            }, '*');
+          } else {
+            console.log('No contentWindow available');
+          }
+        }, 100);
+      });
+
+      // Open in new tab
+      newTab.addEventListener('click', function() {
+        window.open(`variations/${currentStyle}.html`, '_blank');
+      });
+
+      // Initial load
+      pageFrame.onload = () => {
+        loading.style.display = 'none';
+        pageFrame.style.opacity = '1';
       };
     </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <body
-    class="bg-gradient-to-br from-slate-50 to-blue-100 text-gray-800 font-sans min-h-screen flex items-center justify-center px-6"
-  >
-    <main class="w-full max-w-xl space-y-10 text-center">
-      <!-- Logo -->
-      <img
-        src="https://static.wixstatic.com/media/73539d_5a620078fdca4ff686477f416b583fc2~mv2.jpg/v1/crop/x_40,y_58,w_595,h_550/fill/w_266,h_246,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/73539d_5a620078fdca4ff686477f416b583fc2~mv2.jpg"
-        alt="Boss Fitness Logo"
-        class="mx-auto h-20"
-      />
-
-      <!-- Headline -->
-      <div>
-        <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight">
-          Ottawa’s Premier Private Trainers
-        </h1>
-        <p class="mt-3 text-lg text-gray-600 italic">
-          Basic or Sport-Specific Personal Training
-        </p>
-      </div>
-
-      <!-- Info Group -->
-      <div class="space-y-3 text-base text-gray-700">
-        <p class="flex items-center justify-center gap-2">
-          <svg
-            class="w-5 h-5 text-blue-600"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-          >
-            <path
-              d="M17.657 16.657L13 21.314l-4.657-4.657A8 8 0 1117.657 16.657z"
-            />
-          </svg>
-          141 Somerset St at Elgin, Ottawa
-        </p>
-        <p class="flex items-center justify-center gap-2">
-          <svg
-            class="w-5 h-5 text-blue-600"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-          >
-            <path
-              d="M3 5h2l3.6 7.59-1.35 2.45A1 1 0 008 17h12v-2H9.42a.5.5 0 01-.45-.28l.03-.06.9-1.66h7.45a1 1 0 00.93-.63L21 6H6.21"
-            />
-          </svg>
-          <a href="tel:6135581112" class="text-blue-600 hover:underline"
-            >613-558-1112</a
-          >
-        </p>
-        <p class="flex items-center justify-center gap-2">
-          <svg
-            class="w-5 h-5 text-blue-600"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-          >
-            <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          Mon–Fri: 6am–8pm • Sat: 7am–2pm
-        </p>
-      </div>
-
-      <!-- CTA Buttons -->
-      <div class="flex flex-col sm:flex-row justify-center gap-4">
-        <a
-          href="tel:6135581112"
-          class="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold text-lg shadow hover:bg-blue-700 transition"
-        >
-          Call Now
-        </a>
-        <a
-          href="sms:6135581112"
-          class="border border-blue-600 text-blue-600 px-6 py-3 rounded-xl font-semibold text-lg hover:bg-blue-50 transition"
-        >
-          Text Us
-        </a>
-      </div>
-
-      <!-- Trust Badge -->
-      <p class="text-sm text-gray-500">
-        🎉 Celebrating 16 years in business (2008–2024)
-      </p>
-
-      <!-- Social Icons -->
-      <div class="flex justify-center gap-6 pt-2 text-gray-500">
-        <a href="#" aria-label="Instagram" class="hover:text-blue-600">
-          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-            <path
-              d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm10 2a3 3 0 013 3v10a3 3 0 01-3 3H7a3 3 0 01-3-3V7a3 3 0 013-3h10zM12 7a5 5 0 100 10 5 5 0 000-10zm0 2a3 3 0 110 6 3 3 0 010-6zm4.5-.5a1 1 0 110 2 1 1 0 010-2z"
-            />
-          </svg>
-        </a>
-        <a href="#" aria-label="Facebook" class="hover:text-blue-600">
-          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-            <path
-              d="M22 12a10 10 0 10-11.5 9.95v-7.05H8v-2.9h2.5V9.5c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.4H15c-1.2 0-1.6.8-1.6 1.6v1.9H18l-.5 2.9h-2v7.1A10 10 0 0022 12z"
-            />
-          </svg>
-        </a>
-        <a href="#" aria-label="LinkedIn" class="hover:text-blue-600">
-          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-            <path
-              d="M4.98 3.5a2.5 2.5 0 11-.02 5.001A2.5 2.5 0 014.98 3.5zM3 9h4v12H3zM10 9h3.6v1.5h.05c.5-.9 1.7-1.85 3.45-1.85 3.7 0 4.4 2.4 4.4 5.5V21h-4v-5.3c0-1.3-.02-3-1.8-3-1.8 0-2.1 1.4-2.1 2.9V21h-4z"
-            />
-          </svg>
-        </a>
-      </div>
-
-      <!-- Contact Form -->
-      <form
-        action="https://formspree.io/f/xkgqnloa"
-        method="POST"
-        class="bg-white rounded-2xl p-6 shadow-lg space-y-4"
-      >
-        <h2 class="text-2xl font-bold text-gray-800 mb-4">Get Started Today</h2>
-
-        <div class="space-y-4">
-          <div>
-            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
-            <input
-              type="text"
-              name="name"
-              id="name"
-              required
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-              placeholder="Your full name"
-            />
-          </div>
-
-          <div>
-            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-            <input
-              type="email"
-              name="email"
-              id="email"
-              required
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-              placeholder="your@email.com"
-            />
-          </div>
-
-          <div>
-            <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone (optional)</label>
-            <input
-              type="tel"
-              name="phone"
-              id="phone"
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-              placeholder="613-555-0123"
-            />
-          </div>
-
-          <div>
-            <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Message</label>
-            <textarea
-              name="message"
-              id="message"
-              required
-              rows="4"
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition resize-vertical"
-              placeholder="Tell us about your fitness goals..."
-            ></textarea>
-          </div>
-        </div>
-
-        <!-- Honeypot for spam protection -->
-        <input type="text" name="_gotcha" style="display:none" />
-
-        <button
-          type="submit"
-          class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold text-lg hover:bg-blue-700 transition duration-200"
-        >
-          Send Message
-        </button>
-      </form>
-
-      <!-- Footer -->
-      <footer class="text-xs text-gray-400 pt-8">
-        &copy; 2024 Boss Fitness Studios. All rights reserved.
-      </footer>
-    </main>
   </body>
 </html>

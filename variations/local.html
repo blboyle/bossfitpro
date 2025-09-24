@@ -1,0 +1,850 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Boss Fitness Studios - Your Local Ottawa Training Family</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&family=Open+Sans:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Open Sans', sans-serif;
+        background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 100%);
+        min-height: 100vh;
+        padding: 20px;
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      /* Ottawa-inspired maple leaf background */
+      body::before {
+        content: '🍁';
+        position: fixed;
+        top: 10%;
+        left: -5%;
+        font-size: 8rem;
+        opacity: 0.1;
+        z-index: 0;
+        animation: float 6s ease-in-out infinite;
+      }
+
+      body::after {
+        content: '🍁';
+        position: fixed;
+        bottom: 15%;
+        right: -3%;
+        font-size: 6rem;
+        opacity: 0.15;
+        z-index: 0;
+        animation: float 8s ease-in-out infinite reverse;
+      }
+
+      @keyframes float {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(10deg); }
+      }
+
+      .logo-hidden { display: none !important; }
+
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        background: rgba(255,255,255,0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        position: relative;
+        z-index: 1;
+      }
+
+      .header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 50px 40px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 2px, transparent 2px);
+        background-size: 30px 30px;
+        animation: sparkle 20s linear infinite;
+      }
+
+      @keyframes sparkle {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      .logo {
+        height: 90px;
+        margin-bottom: 25px;
+        border-radius: 15px;
+        border: 3px solid rgba(255,255,255,0.8);
+        position: relative;
+        z-index: 2;
+      }
+
+      .hero-title {
+        font-family: 'Fredoka', cursive;
+        font-size: clamp(2.2rem, 5vw, 3rem);
+        font-weight: 600;
+        margin-bottom: 15px;
+        position: relative;
+        z-index: 2;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+      }
+
+      .hero-subtitle {
+        font-size: 1.3rem;
+        font-weight: 400;
+        opacity: 0.9;
+        position: relative;
+        z-index: 2;
+        font-family: 'Fredoka', cursive;
+      }
+
+      .ottawa-pride {
+        background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 600;
+      }
+
+      .content {
+        padding: 50px 40px;
+      }
+
+      .section {
+        margin-bottom: 40px;
+      }
+
+      .welcome-message {
+        background: linear-gradient(135deg, #ffeaa7, #fab1a0);
+        padding: 30px;
+        border-radius: 15px;
+        margin-bottom: 40px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .welcome-message::before {
+        content: '👋';
+        position: absolute;
+        top: -10px;
+        right: 20px;
+        font-size: 3rem;
+        opacity: 0.7;
+        animation: wave 2s ease-in-out infinite;
+      }
+
+      @keyframes wave {
+        0%, 100% { transform: rotate(-20deg); }
+        50% { transform: rotate(20deg); }
+      }
+
+      .welcome-message h2 {
+        font-family: 'Fredoka', cursive;
+        font-size: 1.8rem;
+        color: #2d3436;
+        margin-bottom: 15px;
+      }
+
+      .welcome-message p {
+        color: #636e72;
+        font-size: 1.1rem;
+        line-height: 1.6;
+      }
+
+      .business-info {
+        display: grid;
+        gap: 20px;
+        margin-bottom: 40px;
+      }
+
+      .info-card {
+        background: white;
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        border-left: 5px solid;
+        transition: transform 0.3s ease;
+        position: relative;
+      }
+
+      .info-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .info-card.location {
+        border-left-color: #e17055;
+      }
+
+      .info-card.phone {
+        border-left-color: #00b894;
+      }
+
+      .info-card.hours {
+        border-left-color: #0984e3;
+      }
+
+      .info-item {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .info-icon {
+        width: 28px;
+        height: 28px;
+        padding: 8px;
+        border-radius: 10px;
+        color: white;
+        background: var(--icon-bg);
+      }
+
+      .info-card.location .info-icon {
+        --icon-bg: #e17055;
+      }
+
+      .info-card.phone .info-icon {
+        --icon-bg: #00b894;
+      }
+
+      .info-card.hours .info-icon {
+        --icon-bg: #0984e3;
+      }
+
+      .info-text {
+        flex: 1;
+      }
+
+      .info-label {
+        font-weight: 700;
+        color: #2d3436;
+        font-size: 1rem;
+        margin-bottom: 5px;
+        font-family: 'Fredoka', cursive;
+      }
+
+      .info-value {
+        color: #636e72;
+        font-size: 0.95rem;
+      }
+
+      .phone-link {
+        color: #00b894;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s ease;
+      }
+
+      .phone-link:hover {
+        color: #00a085;
+        text-decoration: underline;
+      }
+
+      .cta-section {
+        text-align: center;
+        margin: 50px 0;
+        padding: 40px 30px;
+        background: linear-gradient(135deg, #fd79a8, #fdcb6e);
+        border-radius: 20px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .cta-section::before {
+        content: '💪';
+        position: absolute;
+        top: 15px;
+        left: 25px;
+        font-size: 2.5rem;
+        opacity: 0.7;
+        animation: pulse 2s ease-in-out infinite;
+      }
+
+      .cta-section::after {
+        content: '🎯';
+        position: absolute;
+        bottom: 15px;
+        right: 25px;
+        font-size: 2.5rem;
+        opacity: 0.7;
+        animation: bounce 3s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+      }
+
+      @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+      }
+
+      .cta-title {
+        font-family: 'Fredoka', cursive;
+        font-size: 2rem;
+        color: white;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      }
+
+      .cta-subtitle {
+        color: rgba(255,255,255,0.9);
+        font-size: 1.1rem;
+        margin-bottom: 30px;
+        font-weight: 500;
+      }
+
+      .cta-buttons {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .cta-primary, .cta-secondary {
+        padding: 18px 35px;
+        border-radius: 50px;
+        font-weight: 700;
+        text-decoration: none;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-family: 'Fredoka', cursive;
+        min-width: 160px;
+        justify-content: center;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .cta-primary {
+        background: white;
+        color: #e17055;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+      }
+
+      .cta-primary:hover {
+        background: #2d3436;
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(0,0,0,0.25);
+      }
+
+      .cta-secondary {
+        background: transparent;
+        color: white;
+        border: 3px solid white;
+      }
+
+      .cta-secondary:hover {
+        background: white;
+        color: #fd79a8;
+      }
+
+      .community-section {
+        background: linear-gradient(135deg, #a8edea, #fed6e3);
+        padding: 40px 30px;
+        border-radius: 20px;
+        margin: 40px 0;
+        text-align: center;
+        position: relative;
+      }
+
+      .community-section::before {
+        content: '🏠';
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        font-size: 2.5rem;
+        opacity: 0.7;
+      }
+
+      .community-title {
+        font-family: 'Fredoka', cursive;
+        font-size: 1.8rem;
+        color: #2d3436;
+        margin-bottom: 20px;
+      }
+
+      .community-text {
+        color: #636e72;
+        font-size: 1.1rem;
+        line-height: 1.7;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .local-highlights {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 25px;
+        margin: 40px 0;
+      }
+
+      .highlight-card {
+        background: white;
+        padding: 30px 25px;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        transition: transform 0.3s ease;
+        border-top: 4px solid var(--card-color);
+      }
+
+      .highlight-card:hover {
+        transform: translateY(-8px);
+      }
+
+      .highlight-card.neighborhood {
+        --card-color: #fd79a8;
+      }
+
+      .highlight-card.experience {
+        --card-color: #fdcb6e;
+      }
+
+      .highlight-card.community {
+        --card-color: #6c5ce7;
+      }
+
+      .highlight-emoji {
+        font-size: 3rem;
+        margin-bottom: 15px;
+        display: block;
+      }
+
+      .highlight-title {
+        font-family: 'Fredoka', cursive;
+        font-size: 1.3rem;
+        color: #2d3436;
+        margin-bottom: 10px;
+        font-weight: 600;
+      }
+
+      .highlight-text {
+        color: #636e72;
+        font-size: 0.95rem;
+        line-height: 1.5;
+      }
+
+      .social-section {
+        text-align: center;
+        padding: 40px 0;
+        border-top: 2px dashed #ddd;
+      }
+
+      .social-title {
+        font-family: 'Fredoka', cursive;
+        font-size: 1.5rem;
+        color: #2d3436;
+        margin-bottom: 25px;
+      }
+
+      .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap;
+      }
+
+      .social-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .social-link.facebook { background: #3b5998; }
+      .social-link.instagram { background: #e4405f; }
+      .social-link.twitter { background: #1da1f2; }
+      .social-link.vimeo { background: #1ab7ea; }
+      .social-link.linkedin { background: #0077b5; }
+
+      .social-link:hover {
+        transform: translateY(-5px) scale(1.1);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      }
+
+      .social-icon {
+        width: 26px;
+        height: 26px;
+      }
+
+      .contact-form {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        margin-top: 40px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .contact-form::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57);
+      }
+
+      .form-title {
+        font-family: 'Fredoka', cursive;
+        font-size: 2.2rem;
+        color: #2d3436;
+        text-align: center;
+        margin-bottom: 15px;
+      }
+
+      .form-subtitle {
+        text-align: center;
+        color: #636e72;
+        font-size: 1rem;
+        margin-bottom: 35px;
+      }
+
+      .form-grid {
+        display: grid;
+        gap: 25px;
+        margin-bottom: 25px;
+      }
+
+      @media (min-width: 640px) {
+        .form-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .form-group.full-width {
+        grid-column: 1 / -1;
+      }
+
+      .form-label {
+        font-family: 'Fredoka', cursive;
+        font-weight: 600;
+        color: #2d3436;
+        margin-bottom: 8px;
+        font-size: 1rem;
+      }
+
+      .form-input, .form-textarea {
+        padding: 15px 18px;
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        font-family: 'Open Sans', sans-serif;
+        background: #f8f9fa;
+      }
+
+      .form-input:focus, .form-textarea:focus {
+        outline: none;
+        border-color: #4ecdc4;
+        background: white;
+        box-shadow: 0 0 0 4px rgba(78, 205, 196, 0.1);
+        transform: translateY(-2px);
+      }
+
+      .form-textarea {
+        resize: vertical;
+        min-height: 120px;
+      }
+
+      .form-submit {
+        width: 100%;
+        padding: 20px;
+        background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+        color: white;
+        border: none;
+        border-radius: 50px;
+        font-size: 1.2rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 25px;
+        font-family: 'Fredoka', cursive;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .form-submit:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        background: linear-gradient(135deg, #e84a4a, #39b8b1);
+      }
+
+      .footer {
+        text-align: center;
+        padding: 30px 40px;
+        background: #2d3436;
+        color: #ddd;
+        font-size: 0.95rem;
+        position: relative;
+      }
+
+      .footer::before {
+        content: 'Made with ❤️ in Ottawa';
+        display: block;
+        margin-bottom: 10px;
+        font-family: 'Fredoka', cursive;
+        color: #4ecdc4;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .content {
+          padding: 30px 25px;
+        }
+
+        .contact-form {
+          padding: 30px 25px;
+        }
+
+        .cta-buttons {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .local-highlights {
+          grid-template-columns: 1fr;
+        }
+
+        .business-info {
+          gap: 15px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <header class="header">
+        <img
+          src="https://static.wixstatic.com/media/73539d_5a620078fdca4ff686477f416b583fc2~mv2.jpg/v1/crop/x_40,y_58,w_595,h_550/fill/w_266,h_246,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/73539d_5a620078fdca4ff686477f416b583fc2~mv2.jpg"
+          alt="Boss Fitness Logo"
+          class="logo"
+          id="logo"
+        />
+        <h1 class="hero-title">Boss Fitness Studios</h1>
+        <p class="hero-subtitle">Your friendly neighbourhood fitness family in <span class="ottawa-pride">Ottawa</span>! 🇨🇦</p>
+      </header>
+
+      <!-- Content -->
+      <div class="content">
+        <!-- Welcome Message -->
+        <section class="welcome-message">
+          <h2>Welcome to our fitness family!</h2>
+          <p>We've been part of the Somerset-Elgin community for over 16 years, helping our Ottawa neighbours reach their fitness goals in a friendly, supportive environment. Come join us!</p>
+        </section>
+
+        <!-- Local Highlights -->
+        <div class="local-highlights">
+          <div class="highlight-card neighborhood">
+            <span class="highlight-emoji">🏘️</span>
+            <h3 class="highlight-title">Heart of the City</h3>
+            <p class="highlight-text">Located in vibrant Centretown, steps away from the Rideau Canal and Parliament Hill</p>
+          </div>
+          <div class="highlight-card experience">
+            <span class="highlight-emoji">🏆</span>
+            <h3 class="highlight-title">16 Years Strong</h3>
+            <p class="highlight-text">Proudly serving Ottawa since 2008 with personalized training that actually works</p>
+          </div>
+          <div class="highlight-card community">
+            <span class="highlight-emoji">👥</span>
+            <h3 class="highlight-title">Local Community</h3>
+            <p class="highlight-text">More than a gym - we're your supportive fitness family in the nation's capital</p>
+          </div>
+        </div>
+
+        <!-- Business Information -->
+        <section class="business-info">
+          <div class="info-card location">
+            <div class="info-item">
+              <svg class="info-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M17.657 16.657L13 21.314l-4.657-4.657A8 8 0 1117.657 16.657z" />
+              </svg>
+              <div class="info-text">
+                <div class="info-label">Find us at</div>
+                <div class="info-value">141 Somerset Street at Elgin<br>Right in downtown Ottawa! 📍</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-card phone">
+            <div class="info-item">
+              <svg class="info-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M3 5.5C3 14.06 9.94 21 18.5 21c.386 0 .77-.014 1.148-.042a1 1 0 00.852-.95 1 1 0 00-.95-.852A16.46 16.46 0 0118.5 19C11.044 19 5 12.956 5 5.5c0-.366.014-.73.042-1.09a1 1 0 00-.95-.852 1 1 0 00-.852.95C3.014 4.73 3 5.116 3 5.5z" />
+              </svg>
+              <div class="info-text">
+                <div class="info-label">Give us a call! ☎️</div>
+                <div class="info-value"><a href="tel:6135581112" class="phone-link">613-558-1112</a><br>We'd love to chat!</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-card hours">
+            <div class="info-item">
+              <svg class="info-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div class="info-text">
+                <div class="info-label">When we're open ⏰</div>
+                <div class="info-value">Monday–Friday: 6am–8pm<br>Saturday: 7am–2pm</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Community Section -->
+        <section class="community-section">
+          <h2 class="community-title">Why Choose Our Ottawa Studio?</h2>
+          <p class="community-text">
+            We're not just another gym - we're your local fitness partners who understand Ottawa life! Whether you're training for the Winterlude 5K, staying fit through those long Canadian winters, or just wanting to feel stronger for daily life, we've got your back. Our cozy studio feels like home, and our trainers know your name (and your coffee order! ☕).
+          </p>
+        </section>
+
+        <!-- Call to Action -->
+        <section class="cta-section">
+          <h2 class="cta-title">Ready to Join Our Family?</h2>
+          <p class="cta-subtitle">Let's chat about your goals over a friendly conversation!</p>
+          <div class="cta-buttons">
+            <a href="tel:6135581112" class="cta-primary">📞 Call Us</a>
+            <a href="sms:6135581112" class="cta-secondary">💬 Text Us</a>
+          </div>
+        </section>
+
+        <!-- Contact Form -->
+        <section class="contact-form">
+          <form action="https://formspree.io/f/xkgqnloa" method="POST" id="contactForm">
+            <h2 class="form-title">Let's Start Your Journey! 🚀</h2>
+            <p class="form-subtitle">Tell us about yourself - we're excited to meet you!</p>
+
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="name" class="form-label">What's your name? 😊</label>
+                <input type="text" name="name" id="name" required class="form-input" placeholder="Your awesome name here" />
+              </div>
+
+              <div class="form-group">
+                <label for="email" class="form-label">Your email address 📧</label>
+                <input type="email" name="email" id="email" required class="form-input" placeholder="your@email.com" />
+              </div>
+            </div>
+
+            <div class="form-group full-width">
+              <label for="phone" class="form-label">Phone number (if you'd like us to call) 📱</label>
+              <input type="tel" name="phone" id="phone" class="form-input" placeholder="613-555-0123" />
+            </div>
+
+            <div class="form-group full-width">
+              <label for="message" class="form-label">Tell us about your fitness dreams! ✨</label>
+              <textarea name="message" id="message" required rows="5" class="form-textarea" placeholder="What brings you joy when it comes to fitness? What are your goals? Any concerns or questions? We'd love to hear your story!"></textarea>
+            </div>
+
+            <!-- Honeypot for spam protection -->
+            <input type="text" name="_gotcha" style="display:none" />
+
+            <button type="submit" class="form-submit">Let's Do This Together! 🎉</button>
+          </form>
+        </section>
+
+        <!-- Social Media -->
+        <section class="social-section">
+          <h3 class="social-title">Follow Our Ottawa Adventures! 📸</h3>
+          <div class="social-links">
+            <a href="https://www.facebook.com/BOSS-Fitness-Studios-115062688510816/" target="_blank" class="social-link facebook" aria-label="Facebook">
+              <svg class="social-icon" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M22 12a10 10 0 10-11.5 9.95v-7.05H8v-2.9h2.5V9.5c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.4H15c-1.2 0-1.6.8-1.6 1.6v1.9H18l-.5 2.9h-2v7.1A10 10 0 0022 12z" />
+              </svg>
+            </a>
+            <a href="https://www.instagram.com/bossfitpro/" target="_blank" class="social-link instagram" aria-label="Instagram">
+              <svg class="social-icon" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm10 2a3 3 0 013 3v10a3 3 0 01-3 3H7a3 3 0 01-3-3V7a3 3 0 013-3h10zM12 7a5 5 0 100 10 5 5 0 000-10zm0 2a3 3 0 110 6 3 3 0 010-6zm4.5-.5a1 1 0 110 2 1 1 0 010-2z" />
+              </svg>
+            </a>
+            <a href="https://twitter.com/bossfit" target="_blank" class="social-link twitter" aria-label="Twitter">
+              <svg class="social-icon" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z" />
+              </svg>
+            </a>
+            <a href="https://vimeo.com/user5018245" target="_blank" class="social-link vimeo" aria-label="Vimeo">
+              <svg class="social-icon" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M23.977 6.416c-.105 2.338-1.739 5.543-4.894 9.609-3.268 4.247-6.026 6.37-8.29 6.37-1.409 0-2.578-1.294-3.553-3.881L5.322 11.4C4.603 8.816 3.834 7.522 3.01 7.522c-.179 0-.806.378-1.881 1.132L0 7.197a315.065 315.065 0 003.501-3.128C5.08 2.701 6.266 1.984 7.055 1.91c1.867-.18 3.016 1.1 3.447 3.838.465 2.953.789 4.789.971 5.507.539 2.45 1.131 3.674 1.776 3.674.502 0 1.256-.796 2.265-2.385 1.004-1.589 1.54-2.797 1.612-3.628.144-1.371-.395-2.061-1.614-2.061-.574 0-1.167.121-1.777.391 1.186-3.868 3.434-5.757 6.762-5.637 2.473.06 3.628 1.664 3.493 4.827l-.013.01z" />
+              </svg>
+            </a>
+            <a href="https://www.linkedin.com/in/trevor-ryan-08778030/" target="_blank" class="social-link linkedin" aria-label="LinkedIn">
+              <svg class="social-icon" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M4.98 3.5a2.5 2.5 0 11-.02 5.001A2.5 2.5 0 014.98 3.5zM3 9h4v12H3zM10 9h3.6v1.5h.05c.5-.9 1.7-1.85 3.45-1.85 3.7 0 4.4 2.4 4.4 5.5V21h-4v-5.3c0-1.3-.02-3-1.8-3-1.8 0-2.1 1.4-2.1 2.9V21h-4z" />
+              </svg>
+            </a>
+          </div>
+        </section>
+      </div>
+
+      <!-- Footer -->
+      <footer class="footer">
+        © 2024 Boss Fitness Studios • Ottawa, Ontario, Canada
+      </footer>
+    </div>
+
+    <script>
+      // Listen for messages from parent frame
+      window.addEventListener('message', function(event) {
+        console.log('Message received:', event.data);
+        if (event.data.type === 'toggleLogo') {
+          const logo = document.getElementById('logo');
+          console.log('Logo element:', logo, 'Visible:', event.data.visible);
+          if (event.data.visible) {
+            logo.classList.remove('logo-hidden');
+          } else {
+            logo.classList.add('logo-hidden');
+          }
+        }
+      });
+
+      // Check URL params for initial logo state
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('hide-logo') === '1') {
+        document.getElementById('logo').classList.add('logo-hidden');
+      }
+    </script>
+  </body>
+</html>
