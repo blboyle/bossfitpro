@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Boss Fitness Studios - Style Demo</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: #1a1a1a;
+        color: white;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      .demo-header {
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        position: relative;
+        z-index: 100;
+      }
+
+      .demo-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+      }
+
+      .demo-controls {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+      }
+
+      .style-selector {
+        background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.2);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        cursor: pointer;
+      }
+
+      .style-selector option {
+        background: #1a1a1a;
+        color: white;
+      }
+
+      .toggle-btn {
+        background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.2);
+        color: white;
+        padding: 0.5rem 0.75rem;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+
+      .toggle-btn:hover {
+        background: rgba(255,255,255,0.2);
+      }
+
+      .frame-container {
+        height: calc(100vh - 80px);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .page-frame {
+        width: 100%;
+        height: 100%;
+        border: none;
+        transition: opacity 0.3s ease;
+      }
+
+      .loading {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #888;
+        font-size: 0.9rem;
+      }
+
+      .demo-info {
+        font-size: 0.75rem;
+        opacity: 0.7;
+        text-align: right;
+      }
+
+      .style-description {
+        font-size: 0.8rem;
+        opacity: 0.8;
+        margin-left: 1rem;
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="demo-header">
+      <div>
+        <span class="demo-title">Boss Fitness Studios - Client Demo</span>
+        <span class="style-description" id="styleDescription">Modern SaaS-style layout</span>
+      </div>
+
+      <div class="demo-controls">
+        <select id="styleSelector" class="style-selector">
+          <option value="modern">Modern/SaaS</option>
+          <option value="energetic">Bold & Energetic</option>
+          <option value="professional">Classic Professional</option>
+          <option value="local">Local & Personal</option>
+        </select>
+
+        <button id="logoToggle" class="toggle-btn">Hide Logo</button>
+        <button id="newTab" class="toggle-btn">Open Standalone</button>
+      </div>
+
+      <div class="demo-info">
+        Different visual personalities • Same content
+      </div>
+    </div>
+
+    <div class="frame-container">
+      <div class="loading" id="loading">Loading...</div>
+      <iframe id="pageFrame" class="page-frame" src="variations/modern.html"></iframe>
+    </div>
+
+    <script>
+      const styleSelector = document.getElementById('styleSelector');
+      const logoToggle = document.getElementById('logoToggle');
+      const newTab = document.getElementById('newTab');
+      const pageFrame = document.getElementById('pageFrame');
+      const loading = document.getElementById('loading');
+      const styleDescription = document.getElementById('styleDescription');
+
+      const styleDescriptions = {
+        modern: 'Clean, minimal, SaaS-style layout',
+        energetic: 'Bold colors, dynamic, fitness energy',
+        professional: 'Traditional business, conservative',
+        local: 'Personal touch, local Ottawa character'
+      };
+
+      let currentStyle = 'modern';
+      let logoVisible = true;
+
+      // Style switcher
+      styleSelector.addEventListener('change', function() {
+        currentStyle = this.value;
+        loading.style.display = 'block';
+        pageFrame.style.opacity = '0.5';
+
+        styleDescription.textContent = styleDescriptions[currentStyle];
+
+        setTimeout(() => {
+          const url = `variations/${currentStyle}.html`;
+          pageFrame.src = logoVisible ? url : `${url}?hide-logo=1`;
+
+          pageFrame.onload = () => {
+            loading.style.display = 'none';
+            pageFrame.style.opacity = '1';
+          };
+        }, 200);
+      });
+
+      // Logo toggle
+      logoToggle.addEventListener('click', function() {
+        logoVisible = !logoVisible;
+        this.textContent = logoVisible ? 'Hide Logo' : 'Show Logo';
+
+        // Communicate with iframe via postMessage with delay to ensure iframe is ready
+        setTimeout(() => {
+          if (pageFrame.contentWindow) {
+            console.log('Sending message:', { type: 'toggleLogo', visible: logoVisible });
+            pageFrame.contentWindow.postMessage({
+              type: 'toggleLogo',
+              visible: logoVisible
+            }, '*');
+          } else {
+            console.log('No contentWindow available');
+          }
+        }, 100);
+      });
+
+      // Open in new tab
+      newTab.addEventListener('click', function() {
+        window.open(`variations/${currentStyle}.html`, '_blank');
+      });
+
+      // Initial load
+      pageFrame.onload = () => {
+        loading.style.display = 'none';
+        pageFrame.style.opacity = '1';
+      };
+    </script>
+  </body>
+</html>
