@@ -1,0 +1,6 @@
+# robots.txt for Boss Fitness Studios
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://bossfitnessstudios.com/sitemap.xml
