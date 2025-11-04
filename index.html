@@ -235,7 +235,9 @@
               d="M17.657 16.657L13 21.314l-4.657-4.657A8 8 0 1117.657 16.657z"
             />
           </svg>
-          <span>141 Somerset St at Elgin, Centretown Ottawa, ON</span>
+          <a href="https://maps.google.com/?q=141+Somerset+St+at+Elgin,Ottawa,ON" target="_blank" rel="noopener noreferrer" class="text-boss-blue hover:text-boss-blue-hover transition-colors font-medium">
+            141 Somerset St at Elgin, Ottawa, ON
+          </a>
         </div>
 
         <div class="flex items-center justify-center gap-3">
@@ -287,7 +289,7 @@
 
       <!-- Trust Badge -->
       <div class="text-base text-gray-600 bg-white/30 backdrop-blur-sm rounded-xl p-4 inline-block">
-        🎉 Celebrating 16 years in business (2008–2024)
+        🎉 Celebrating <span id="yearsInBusiness"></span> years in business (2008–<span id="currentYearBadge"></span>)
       </div>
 
       <!-- Social Icons -->
@@ -410,11 +412,20 @@
 
       <!-- Footer -->
       <footer class="text-sm text-gray-600 pt-8 border-t border-gray-200">
-        &copy; 2024 Boss Fitness Studios. All rights reserved.
+        &copy; <span id="currentYear"></span> Boss Fitness Studios. All rights reserved.
       </footer>
     </main>
 
     <script>
+      // Set current year in footer and trust badge
+      const currentYear = new Date().getFullYear();
+      document.getElementById('currentYear').textContent = currentYear;
+      document.getElementById('currentYearBadge').textContent = currentYear;
+
+      // Calculate years in business (founded 2008)
+      const yearsInBusiness = currentYear - 2008;
+      document.getElementById('yearsInBusiness').textContent = yearsInBusiness;
+
       // Form submission handling
       const contactForm = document.getElementById('contactForm');
       const submitButton = document.getElementById('submitButton');

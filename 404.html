@@ -79,8 +79,13 @@
 
       <!-- Footer -->
       <footer class="text-sm text-gray-500 pt-12">
-        &copy; 2024 Boss Fitness Studios. All rights reserved.
+        &copy; <span id="currentYear"></span> Boss Fitness Studios. All rights reserved.
       </footer>
     </main>
+
+    <script>
+      // Set current year in footer
+      document.getElementById('currentYear').textContent = new Date().getFullYear();
+    </script>
   </body>
 </html>
