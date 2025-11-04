@@ -379,7 +379,7 @@
             type="tel"
             name="phone"
             id="phone"
-            class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+            class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-boss-blue focus:border-transparent outline-none transition-all"
             placeholder="613-555-0123"
           />
         </div>
@@ -391,7 +391,7 @@
             id="message"
             required
             rows="4"
-            class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-vertical"
+            class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-boss-blue focus:border-transparent outline-none transition-all resize-vertical"
             placeholder="Tell us about your fitness goals..."
           ></textarea>
         </div>
@@ -603,38 +603,7 @@
         });
       }, 5000); // Check every 5 seconds
 
-      // 6. OUTBOUND LINK TRACKING
-      // Track any external links
-      document.querySelectorAll('a[href^="http"]').forEach(link => {
-        if (!link.href.includes(window.location.hostname)) {
-          link.addEventListener('click', function(e) {
-            trackEvent('click_outbound_link', {
-              link_url: this.href,
-              link_text: this.textContent.trim() || this.getAttribute('aria-label') || 'External Link'
-            });
-          });
-        }
-      });
-
-      // 7. LOGO VISIBILITY TRACKING
-      // Track if logo is hidden/shown (for demo purposes)
-      const logo = document.getElementById('logo');
-      if (logo) {
-        const observer = new MutationObserver(function(mutations) {
-          mutations.forEach(function(mutation) {
-            if (mutation.attributeName === 'class') {
-              const isHidden = logo.classList.contains('logo-hidden');
-              trackEvent('logo_visibility_change', {
-                visible: !isHidden
-              });
-            }
-          });
-        });
-
-        observer.observe(logo, { attributes: true });
-      }
-
-      // 8. PAGE VISIBILITY TRACKING
+      // 6. PAGE VISIBILITY TRACKING
       // Track when user leaves/returns to tab
       document.addEventListener('visibilitychange', function() {
         trackEvent('page_visibility_change', {
@@ -643,7 +612,7 @@
         });
       });
 
-      // 9. SCROLL TO SECTION TRACKING
+      // 7. SCROLL TO SECTION TRACKING
       // Track when users scroll to specific sections
       const sections = {
         'headline': document.querySelector('h1'),
@@ -672,7 +641,7 @@
         if (section) sectionObserver.observe(section);
       });
 
-      // 10. ERROR TRACKING
+      // 8. ERROR TRACKING
       // Track JavaScript errors
       window.addEventListener('error', function(e) {
         trackEvent('javascript_error', {
@@ -682,7 +651,7 @@
         });
       });
 
-      // 11. PAGE LOAD PERFORMANCE
+      // 9. PAGE LOAD PERFORMANCE
       // Track page load time
       window.addEventListener('load', function() {
         setTimeout(function() {
@@ -696,7 +665,7 @@
         }, 0);
       });
 
-      // 12. INITIAL PAGE VIEW
+      // 10. INITIAL PAGE VIEW
       // Track page view with additional context
       trackEvent('page_view', {
         page_title: document.title,
