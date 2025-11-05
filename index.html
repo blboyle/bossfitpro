@@ -58,7 +58,114 @@
     />
     <style>
       .logo-hidden { display: none; }
+
+      /* Cookie Consent Banner Styles */
+      .cookie-banner {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(135deg, rgba(26, 26, 26, 0.98), rgba(45, 45, 45, 0.98));
+        backdrop-filter: blur(10px);
+        color: white;
+        padding: 1.5rem;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+        z-index: 9999;
+        transform: translateY(100%);
+        transition: transform 0.4s ease-out;
+      }
+      .cookie-banner.show {
+        transform: translateY(0);
+      }
+      .cookie-banner-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+      @media (min-width: 768px) {
+        .cookie-banner-content {
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+        }
+      }
+      .cookie-text {
+        flex: 1;
+        font-size: 0.95rem;
+        line-height: 1.6;
+      }
+      .cookie-buttons {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+      }
+      .cookie-btn {
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        border: none;
+        font-size: 0.95rem;
+      }
+      .cookie-btn-accept {
+        background: #01aeee;
+        color: white;
+      }
+      .cookie-btn-accept:hover {
+        background: #0199d1;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(1, 174, 238, 0.4);
+      }
+      .cookie-btn-decline {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+      .cookie-btn-decline:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+      .cookie-link {
+        color: #01aeee;
+        text-decoration: underline;
+      }
+      .cookie-link:hover {
+        color: #0199d1;
+      }
     </style>
+
+    <!-- Google Analytics 4 - Consent Mode -->
+    <script>
+      // Initialize gtag with consent mode BEFORE GA4 loads
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+
+      // Default consent to 'denied' - will update based on user choice
+      gtag('consent', 'default', {
+        'analytics_storage': 'denied',
+        'ad_storage': 'denied'
+      });
+
+      // Check if user has already made a consent choice
+      const cookieConsent = localStorage.getItem('cookieConsent');
+      if (cookieConsent === 'accepted') {
+        gtag('consent', 'update', {
+          'analytics_storage': 'granted'
+        });
+      }
+    </script>
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7XSKVVWK01"></script>
+    <script>
+      gtag('js', new Date());
+      gtag('config', 'G-7XSKVVWK01', {
+        'anonymize_ip': true,
+        'cookie_flags': 'SameSite=None;Secure'
+      });
+    </script>
 
     <!-- LocalBusiness Schema -->
     <script type="application/ld+json">
@@ -201,6 +308,23 @@
   <body
     class="bg-gradient-to-br from-slate-50 to-blue-100 text-gray-800 font-sans min-h-screen px-6 py-12"
   >
+    <!-- Cookie Consent Banner -->
+    <div id="cookieBanner" class="cookie-banner">
+      <div class="cookie-banner-content">
+        <div class="cookie-text">
+          <p>
+            <strong>🍪 We use cookies to improve your experience</strong><br>
+            We use Google Analytics to understand how visitors use our website and improve our services.
+            <a href="/privacy.html" class="cookie-link">Learn more in our Privacy Policy</a>
+          </p>
+        </div>
+        <div class="cookie-buttons">
+          <button id="acceptCookies" class="cookie-btn cookie-btn-accept">Accept</button>
+          <button id="declineCookies" class="cookie-btn cookie-btn-decline">Decline</button>
+        </div>
+      </div>
+    </div>
+
     <main class="w-full max-w-2xl space-y-12 text-center mx-auto">
       <!-- Logo -->
       <img
@@ -452,7 +576,12 @@
 
       <!-- Footer -->
       <footer class="text-sm text-gray-600 pt-8 border-t border-gray-200">
-        &copy; <span id="currentYear"></span> Boss Fitness Studios. All rights reserved.
+        <p>&copy; <span id="currentYear"></span> Boss Fitness Studios. All rights reserved.</p>
+        <p class="mt-2">
+          <a href="/privacy.html" class="text-boss-blue hover:text-boss-blue-hover transition-colors">Privacy Policy</a>
+          <span class="mx-2">•</span>
+          <button id="cookieSettings" class="text-boss-blue hover:text-boss-blue-hover transition-colors cursor-pointer bg-transparent border-none underline">Cookie Settings</button>
+        </p>
       </footer>
     </main>
 
@@ -466,15 +595,226 @@
       const yearsInBusiness = currentYear - 2008;
       document.getElementById('yearsInBusiness').textContent = yearsInBusiness;
 
-      // Form submission handling
+      // ============================================
+      // COOKIE CONSENT MANAGEMENT
+      // ============================================
+      const cookieBanner = document.getElementById('cookieBanner');
+      const acceptCookiesBtn = document.getElementById('acceptCookies');
+      const declineCookiesBtn = document.getElementById('declineCookies');
+      const cookieSettingsBtn = document.getElementById('cookieSettings');
+
+      // Check if user has already made a consent choice
+      function checkCookieConsent() {
+        const consent = localStorage.getItem('cookieConsent');
+        if (!consent) {
+          // Show banner after short delay for better UX
+          setTimeout(() => {
+            cookieBanner.classList.add('show');
+          }, 1000);
+        }
+      }
+
+      // Accept cookies
+      acceptCookiesBtn.addEventListener('click', function() {
+        localStorage.setItem('cookieConsent', 'accepted');
+        cookieBanner.classList.remove('show');
+
+        // Update Google Analytics consent
+        if (typeof gtag !== 'undefined') {
+          gtag('consent', 'update', {
+            'analytics_storage': 'granted'
+          });
+        }
+
+        // Reload to ensure GA4 starts tracking
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
+      });
+
+      // Decline cookies
+      declineCookiesBtn.addEventListener('click', function() {
+        localStorage.setItem('cookieConsent', 'declined');
+        cookieBanner.classList.remove('show');
+
+        // Ensure Google Analytics consent remains denied
+        if (typeof gtag !== 'undefined') {
+          gtag('consent', 'update', {
+            'analytics_storage': 'denied'
+          });
+        }
+      });
+
+      // Cookie settings button (re-show banner)
+      cookieSettingsBtn.addEventListener('click', function() {
+        localStorage.removeItem('cookieConsent');
+        cookieBanner.classList.add('show');
+      });
+
+      // Initialize on page load
+      checkCookieConsent();
+
+      // ============================================
+      // GOOGLE ANALYTICS EVENT TRACKING
+      // ============================================
+      // Only track events if consent is granted
+      function trackEvent(eventName, eventParams = {}) {
+        const consent = localStorage.getItem('cookieConsent');
+        if (consent === 'accepted' && typeof gtag !== 'undefined') {
+          gtag('event', eventName, eventParams);
+        }
+      }
+
+      // Track CTA Button Clicks
+      document.querySelectorAll('a[href^="tel:"]').forEach(function(link) {
+        link.addEventListener('click', function() {
+          trackEvent('phone_call_click', {
+            'event_category': 'engagement',
+            'event_label': 'Call Now Button',
+            'phone_number': '613-558-1112'
+          });
+        });
+      });
+
+      document.querySelectorAll('a[href^="sms:"]').forEach(function(link) {
+        link.addEventListener('click', function() {
+          trackEvent('sms_click', {
+            'event_category': 'engagement',
+            'event_label': 'Text Us Button',
+            'phone_number': '613-558-1112'
+          });
+        });
+      });
+
+      // Track Social Media Clicks
+      const socialLinks = {
+        'facebook.com': 'Facebook',
+        'instagram.com': 'Instagram',
+        'twitter.com': 'Twitter',
+        'vimeo.com': 'Vimeo',
+        'linkedin.com': 'LinkedIn'
+      };
+
+      document.querySelectorAll('a[href*="facebook.com"], a[href*="instagram.com"], a[href*="twitter.com"], a[href*="vimeo.com"], a[href*="linkedin.com"]').forEach(function(link) {
+        link.addEventListener('click', function() {
+          const url = this.href;
+          let platform = 'Unknown';
+
+          for (const [domain, name] of Object.entries(socialLinks)) {
+            if (url.includes(domain)) {
+              platform = name;
+              break;
+            }
+          }
+
+          trackEvent('social_click', {
+            'event_category': 'social_media',
+            'event_label': platform,
+            'link_url': url
+          });
+        });
+      });
+
+      // Track Google Maps Link Click
+      document.querySelectorAll('a[href*="maps.google.com"]').forEach(function(link) {
+        link.addEventListener('click', function() {
+          trackEvent('maps_click', {
+            'event_category': 'engagement',
+            'event_label': 'Google Maps Address',
+            'address': '141 Somerset St West at Elgin #302, Ottawa'
+          });
+        });
+      });
+
+      // Track Trevor Ryan Website Link
+      document.querySelectorAll('a[href*="trevorryan.net"]').forEach(function(link) {
+        link.addEventListener('click', function() {
+          trackEvent('external_link_click', {
+            'event_category': 'engagement',
+            'event_label': 'Trevor Ryan Website',
+            'link_url': this.href
+          });
+        });
+      });
+
+      // Track Scroll Depth
+      let scrollDepths = [25, 50, 75, 90, 100];
+      let scrollTracked = [];
+
+      window.addEventListener('scroll', function() {
+        const scrollPercent = Math.round(
+          (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100
+        );
+
+        scrollDepths.forEach(function(depth) {
+          if (scrollPercent >= depth && !scrollTracked.includes(depth)) {
+            scrollTracked.push(depth);
+            trackEvent('scroll_depth', {
+              'event_category': 'engagement',
+              'event_label': depth + '% Scrolled',
+              'value': depth
+            });
+          }
+        });
+      });
+
+      // Track Time on Page
+      const timeIntervals = [10, 30, 60, 120, 300]; // seconds
+      let timeTracked = [];
+
+      timeIntervals.forEach(function(interval) {
+        setTimeout(function() {
+          if (!timeTracked.includes(interval)) {
+            timeTracked.push(interval);
+            trackEvent('time_on_page', {
+              'event_category': 'engagement',
+              'event_label': interval + ' seconds',
+              'value': interval
+            });
+          }
+        }, interval * 1000);
+      });
+
+      // ============================================
+      // FORM TRACKING & SUBMISSION HANDLING
+      // ============================================
       const contactForm = document.getElementById('contactForm');
       const submitButton = document.getElementById('submitButton');
       const buttonText = document.getElementById('buttonText');
       const formSuccess = document.getElementById('formSuccess');
       const formError = document.getElementById('formError');
 
+      // Track form initiation (user clicks any form field)
+      let formInitiated = false;
+      const formFields = contactForm.querySelectorAll('input, textarea');
+
+      formFields.forEach(function(field) {
+        field.addEventListener('focus', function() {
+          if (!formInitiated) {
+            formInitiated = true;
+            trackEvent('form_start', {
+              'event_category': 'form',
+              'event_label': 'Contact Form Initiated'
+            });
+          }
+
+          // Track individual field interactions
+          trackEvent('form_field_focus', {
+            'event_category': 'form',
+            'event_label': 'Field: ' + field.name
+          });
+        });
+      });
+
+      // Track form submission
       contactForm.addEventListener('submit', async function(e) {
         e.preventDefault();
+
+        // Track form submission attempt
+        trackEvent('form_submit_attempt', {
+          'event_category': 'form',
+          'event_label': 'Contact Form'
+        });
 
         // Show loading state
         submitButton.disabled = true;
@@ -493,19 +833,45 @@
           });
 
           if (response.ok) {
-            // Success!
+            // Success! Track conversion
+            trackEvent('form_submit_success', {
+              'event_category': 'form',
+              'event_label': 'Contact Form',
+              'value': 1
+            });
+
+            // Track as a lead generation conversion
+            trackEvent('generate_lead', {
+              'event_category': 'conversion',
+              'event_label': 'Contact Form Lead',
+              'value': 1
+            });
+
             formSuccess.classList.remove('hidden');
             contactForm.reset();
             buttonText.textContent = 'Send Message';
             submitButton.disabled = false;
+            formInitiated = false; // Reset for potential second submission
           } else {
-            // Error
+            // Error - Track failure
+            trackEvent('form_submit_error', {
+              'event_category': 'form',
+              'event_label': 'Contact Form Error',
+              'error_type': 'Server Error'
+            });
+
             formError.classList.remove('hidden');
             buttonText.textContent = 'Send Message';
             submitButton.disabled = false;
           }
         } catch (error) {
-          // Network error
+          // Network error - Track failure
+          trackEvent('form_submit_error', {
+            'event_category': 'form',
+            'event_label': 'Contact Form Error',
+            'error_type': 'Network Error'
+          });
+
           formError.classList.remove('hidden');
           buttonText.textContent = 'Send Message';
           submitButton.disabled = false;
