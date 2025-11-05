@@ -59,80 +59,93 @@
     <style>
       .logo-hidden { display: none; }
 
-      /* Cookie Consent Banner Styles */
+      /* Cookie Consent Banner Styles - Subtle */
       .cookie-banner {
         position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: linear-gradient(135deg, rgba(26, 26, 26, 0.98), rgba(45, 45, 45, 0.98));
+        bottom: 1.5rem;
+        right: 1.5rem;
+        max-width: 420px;
+        background: rgba(255, 255, 255, 0.98);
         backdrop-filter: blur(10px);
-        color: white;
-        padding: 1.5rem;
-        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+        color: #374151;
+        padding: 1.25rem;
+        border-radius: 1rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
         z-index: 9999;
-        transform: translateY(100%);
-        transition: transform 0.4s ease-out;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+        border: 1px solid rgba(0, 0, 0, 0.08);
       }
       .cookie-banner.show {
+        opacity: 1;
         transform: translateY(0);
       }
       .cookie-banner-content {
-        max-width: 1200px;
-        margin: 0 auto;
         display: flex;
         flex-direction: column;
         gap: 1rem;
       }
-      @media (min-width: 768px) {
-        .cookie-banner-content {
-          flex-direction: row;
-          align-items: center;
-          justify-content: space-between;
-        }
-      }
       .cookie-text {
-        flex: 1;
-        font-size: 0.95rem;
-        line-height: 1.6;
+        font-size: 0.875rem;
+        line-height: 1.5;
+        color: #4b5563;
+      }
+      .cookie-text strong {
+        color: #111827;
+        font-size: 0.9rem;
       }
       .cookie-buttons {
         display: flex;
-        gap: 0.75rem;
+        gap: 0.5rem;
         flex-wrap: wrap;
       }
       .cookie-btn {
-        padding: 0.75rem 1.5rem;
+        padding: 0.5rem 1rem;
         border-radius: 0.5rem;
-        font-weight: 600;
+        font-weight: 500;
         cursor: pointer;
         transition: all 0.2s;
         border: none;
-        font-size: 0.95rem;
+        font-size: 0.875rem;
       }
       .cookie-btn-accept {
         background: #01aeee;
         color: white;
+        flex: 1;
       }
       .cookie-btn-accept:hover {
         background: #0199d1;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(1, 174, 238, 0.4);
+        box-shadow: 0 2px 8px rgba(1, 174, 238, 0.3);
       }
       .cookie-btn-decline {
-        background: rgba(255, 255, 255, 0.1);
-        color: white;
-        border: 1px solid rgba(255, 255, 255, 0.3);
+        background: transparent;
+        color: #6b7280;
+        border: 1px solid #d1d5db;
+        flex: 1;
       }
       .cookie-btn-decline:hover {
-        background: rgba(255, 255, 255, 0.2);
+        background: #f9fafb;
+        color: #374151;
       }
       .cookie-link {
         color: #01aeee;
-        text-decoration: underline;
+        text-decoration: none;
+        font-weight: 500;
       }
       .cookie-link:hover {
         color: #0199d1;
+        text-decoration: underline;
+      }
+
+      /* Mobile responsive */
+      @media (max-width: 640px) {
+        .cookie-banner {
+          bottom: 1rem;
+          right: 1rem;
+          left: 1rem;
+          max-width: none;
+        }
       }
     </style>
 
@@ -313,9 +326,9 @@
       <div class="cookie-banner-content">
         <div class="cookie-text">
           <p>
-            <strong>🍪 We use cookies to improve your experience</strong><br>
-            We use Google Analytics to understand how visitors use our website and improve our services.
-            <a href="/privacy.html" class="cookie-link">Learn more in our Privacy Policy</a>
+            <strong>Cookie Notice</strong><br>
+            We use cookies to improve your experience.
+            <a href="/privacy.html" class="cookie-link">Learn more</a>
           </p>
         </div>
         <div class="cookie-buttons">
