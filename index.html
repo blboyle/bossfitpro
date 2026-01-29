@@ -499,6 +499,33 @@
         </div>
       </div>
 
+      <!-- Hockey Video -->
+      <div class="bg-white rounded-3xl p-8 sm:p-12 shadow-xl space-y-6 text-center">
+        <h2 class="text-3xl font-bold text-gray-900">See Trevor in Action</h2>
+        <div class="relative w-full rounded-2xl overflow-hidden bg-black" style="aspect-ratio: 16/9;">
+          <button
+            id="videoFacade"
+            class="absolute inset-0 w-full h-full cursor-pointer group border-0 p-0 bg-black"
+            aria-label="Play hockey video"
+          >
+            <img
+              src="https://vumbnail.com/17643504.jpg"
+              alt="Trevor Ryan hockey highlights"
+              class="w-full h-full object-cover"
+              loading="lazy"
+            />
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="w-16 h-16 sm:w-20 sm:h-20 bg-boss-blue/90 rounded-full flex items-center justify-center group-hover:bg-boss-blue transition-colors shadow-lg">
+                <svg class="w-8 h-8 sm:w-10 sm:h-10 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </div>
+            </div>
+          </button>
+          <div id="videoContainer" class="hidden absolute inset-0 w-full h-full"></div>
+        </div>
+      </div>
+
       <!-- Contact Form -->
       <form
         id="contactForm"
@@ -667,6 +694,29 @@
 
       // Initialize on page load
       checkCookieConsent();
+
+      // ============================================
+      // VIDEO FACADE (CLICK-TO-LOAD)
+      // ============================================
+      document.getElementById('videoFacade').addEventListener('click', function() {
+        var container = document.getElementById('videoContainer');
+        var iframe = document.createElement('iframe');
+        iframe.src = 'https://player.vimeo.com/video/17643504?autoplay=1&title=0&byline=0&portrait=0';
+        iframe.className = 'w-full h-full';
+        iframe.frameBorder = '0';
+        iframe.allow = 'autoplay; fullscreen; picture-in-picture';
+        iframe.allowFullscreen = true;
+        iframe.title = 'Trevor Ryan Hockey Highlights';
+        container.appendChild(iframe);
+        container.classList.remove('hidden');
+        this.classList.add('hidden');
+
+        trackEvent('video_play', {
+          'event_category': 'engagement',
+          'event_label': 'Hockey Video',
+          'video_url': 'https://vimeo.com/17643504'
+        });
+      });
 
       // ============================================
       // GOOGLE ANALYTICS EVENT TRACKING
